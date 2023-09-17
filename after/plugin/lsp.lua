@@ -1,17 +1,15 @@
-local lsp = require('lsp-zero').preset({})
+local lsp = require('lsp-zero').preset("recommended")
 
-lsp.on_attach(function(client, bufnr)
-  -- see :help lsp-zero-keybindings
-  -- to learn the available actions
-  lsp.default_keymaps({buffer = bufnr})
-end)
+lsp.ensure_installed({
+	'tsserver',
+	'eslint',
+	-- 'sumneko_lua'
+})
 
 -- (Optional) Configure lua language server for neovim
 require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
 require'lspconfig'.ruby_ls.setup{}
-
-lsp.setup()
 
 local lspconfig = require("lspconfig")
 local configs = require("lspconfig.configs")
@@ -23,7 +21,7 @@ if not configs.ruby_lsp then
 		"documentSymbols",
 		"foldingRanges",
 		"selectionRanges",
-		-- "semanticHighlighting",
+		"semanticHighlighting",
 		"formatting",
 		"codeActions",
 	}
@@ -53,3 +51,11 @@ if not configs.ruby_lsp then
 end
 
 lspconfig.ruby_lsp.setup({ on_attach = on_attach, capabilities = capabilities })
+
+lsp.on_attach(function(client, bufnr)
+  -- see :help lsp-zero-keybindings
+  -- to learn the available actions
+  lsp.default_keymaps({buffer = bufnr})
+end)
+
+lsp.setup()
