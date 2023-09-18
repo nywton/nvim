@@ -1,16 +1,16 @@
 local lsp = require('lsp-zero').preset("recommended")
 
 lsp.ensure_installed({
-	'tsserver',
-	'eslint',
-	-- 'sumneko_lua'
+  'tsserver',
+  'eslint',
+  -- 'sumneko_lua'
 })
 
 -- (Optional) Configure lua language server for neovim
 require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
 lsp.on_attach(function(client, bufnr)
-	local opts = {buffer = bufnr, remap = false}
+  local opts = { buffer = bufnr, remap = false }
 
   vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
   vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
@@ -24,7 +24,7 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 
 
-  lsp.default_keymaps({buffer = bufnr})
+  lsp.default_keymaps({ buffer = bufnr })
 end)
 
 -- textDocument/diagnostic support until 0.10.0 is released
@@ -73,6 +73,20 @@ require("lspconfig").ruby_ls.setup({
   on_attach = function(client, buffer)
     setup_diagnostics(client, buffer)
   end,
+})
+
+lsp.format_on_save({
+  format_opts = {
+    async = false,
+    timeout_ms = 10000,
+  },
+  servers = {
+    ['lua_ls'] = { 'lua' },
+    ['ruby_ls'] = { 'ruby' },
+    -- if you have a working setup with null-ls
+    -- you can specify filetypes it can format.
+    -- ['null-ls'] = {'javascript', 'typescript'},
+  }
 })
 
 lsp.setup()
