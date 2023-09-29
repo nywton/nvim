@@ -3,11 +3,13 @@ vim.opt.signcolumn = 'yes'
 local lsp = require('lsp-zero').preset("recommended")
 local lspconfig = require('lspconfig')
 
+-- list of available servers on :help lspconfig-all
 lsp.ensure_installed({
   'html',
   'cssls',
   'tsserver',
   'eslint',
+  'tailwindcss',
   'solargraph',
 })
 
@@ -16,9 +18,9 @@ lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
 -- Ruby LSP Setup
 require('lspconfig-bundler').setup()
 
-lspconfig.ruby_ls.setup({
-  cmd = { "bundle", "exec", "ruby-lsp" }
-})
+-- lspconfig.ruby_ls.setup({
+--   cmd = { "bundle", "exec", "ruby-lsp" }
+-- })
 
 lsp.on_attach(function(client, bufnr)
   local opts = { buffer = bufnr, remap = false }
@@ -55,6 +57,8 @@ require('lspconfig')['html'].setup { capabilities = capabilities }
 require('lspconfig')['cssls'].setup { capabilities = capabilities }
 require('lspconfig')['tsserver'].setup { capabilities = capabilities }
 require('lspconfig')['eslint'].setup { capabilities = capabilities }
+require('lspconfig')['tailwindcss'].setup {}
+
 
 
 -- textDocument/diagnostic support until 0.10.0 is released
