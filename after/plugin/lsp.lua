@@ -9,11 +9,9 @@ lsp.ensure_installed({
   'tsserver',
   'eslint',
   'solargraph',
---  'sumneko_lua'
 })
 
 lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
-
 
 -- Ruby LSP Setup
 require('lspconfig-bundler').setup()
@@ -21,9 +19,6 @@ require('lspconfig-bundler').setup()
 lspconfig.ruby_ls.setup({
   cmd = { "bundle", "exec", "ruby-lsp" }
 })
-
--- End Ruby LSP Setup
-
 
 lsp.on_attach(function(client, bufnr)
   local opts = { buffer = bufnr, remap = false }
@@ -46,6 +41,7 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("n", "<leader>]d", function() vim.diagnostic.go_prev() end, opts)
   vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
   vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+  -- vim.keymap.set('i', '<Tab>', '<C-x><C-o>', { noremap = true, silent = true }) -- make Tab to accept lsp sugestion
 
 
   lsp.default_keymaps({ buffer = bufnr })
@@ -59,7 +55,6 @@ require('lspconfig')['html'].setup { capabilities = capabilities }
 require('lspconfig')['cssls'].setup { capabilities = capabilities }
 require('lspconfig')['tsserver'].setup { capabilities = capabilities }
 require('lspconfig')['eslint'].setup { capabilities = capabilities }
---require('lspconfig')['sumneko_lua'].setup { capabilities = capabilities }
 
 
 -- textDocument/diagnostic support until 0.10.0 is released
@@ -70,8 +65,17 @@ lsp.format_on_save({
   },
   servers = {
     ['lua_ls'] = { 'lua' },
-    -- ['solargraph'] = { 'ruby' },
+    ['solargraph'] = { 'ruby' },
+    ['html'] = { 'html' }
   }
 })
 
 lsp.setup()
+
+local cmp = require('cmp')
+
+cmp.setup({
+  mapping = {
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+  }
+})

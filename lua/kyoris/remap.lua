@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 
-vim.keymap.set('n', '<Leader><Leader>', ':source $MYVIMRC<CR>', { silent = false })
+vim.keymap.set('n', '<leader><leader>', ':source $MYVIMRC<CR>', { silent = false })
 
 vim.keymap.set("n", "<leader>e", vim.cmd.Ex) -- Nvim file three
 vim.keymap.set("n", "<leader>w", vim.cmd.w)
@@ -29,6 +29,8 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 vim.keymap.set("n", "<leader>y", "\"+y")
 vim.keymap.set("v", "<leader>y", "\"+y")
 vim.keymap.set("n", "<leader>Y", "\"+Y")
+vim.keymap.set("n", "<leader>d", "\"+yg_")
+vim.keymap.set("n", "<leader>d", "\"+yg_")
 
 vim.keymap.set("n", "<leader>d", "\"_d")
 vim.keymap.set("v", "<leader>d", "\"_d")
