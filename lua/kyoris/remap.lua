@@ -1,12 +1,14 @@
 vim.g.mapleader = " "
 
-vim.keymap.set('n', '<leader><leader>', ':source $MYVIMRC<CR>', { silent = false })
+-- reloads the nvim config file
+vim.keymap.set('n', '<Leader><Leader>', ':source $MYVIMRC<CR>', { silent = false })
 
-vim.keymap.set("n", "<leader>e", vim.cmd.Ex) -- Nvim file three
+-- nvim file three
+vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>w", vim.cmd.w)
 vim.keymap.set("n", "<leader>q", vim.cmd.q)
 
--- Block Arrow Keys in Normal mode
+-- disables arrow keys in normal mode
 vim.keymap.set("n", "<Up>", "<Nop>")
 vim.keymap.set("n", "<Right>", "<Nop>")
 vim.keymap.set("n", "<Down>", "<Nop>")
@@ -16,6 +18,7 @@ vim.keymap.set("n", "<Left>", "<Nop>")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '>-2<CR>gv=gv")
 
+-- centralize the document with zz on moving
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
