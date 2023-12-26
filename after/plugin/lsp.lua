@@ -10,14 +10,14 @@ lsp.ensure_installed({
   'tsserver',
   'eslint',
   'tailwindcss',
-  'solargraph',
+  -- 'solargraph'
 })
 
 lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
 
 -- Ruby LSP Setup
-require('lspconfig-bundler').setup()
-
+-- require('lspconfig-bundler').setup()
+--
 -- lspconfig.ruby_ls.setup({
 --   cmd = { "bundle", "exec", "ruby-lsp" }
 -- })
@@ -59,6 +59,15 @@ require('lspconfig')['tsserver'].setup { capabilities = capabilities }
 require('lspconfig')['eslint'].setup { capabilities = capabilities }
 require('lspconfig')['tailwindcss'].setup {}
 
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  -- Replace the language servers listed here
+  -- with the ones you want to install
+  ensure_installed = { 'tsserver', 'rust_analyzer' },
+  handlers = {
+    lsp.default_setup,
+  },
+})
 
 
 -- textDocument/diagnostic support until 0.10.0 is released
@@ -69,7 +78,7 @@ lsp.format_on_save({
   },
   servers = {
     ['lua_ls'] = { 'lua' },
-    ['solargraph'] = { 'ruby' },
+    -- ['solargraph'] = { 'ruby' },
     ['html'] = { 'html' }
   }
 })

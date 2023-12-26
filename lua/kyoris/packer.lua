@@ -28,6 +28,10 @@ return require('packer').startup(function(use)
     end
   }
 
+  -- https://github.com/nvim-tree/nvim-tree.lua
+  use('nvim-tree/nvim-tree.lua')
+  use('nvim-tree/nvim-web-devicons')
+
   use('theprimeagen/harpoon')
 
   use('mbbill/undotree')

@@ -16,7 +16,7 @@ vim.opt.backup = false
 local undo_path = os.getenv("HOME") .. "/.vim/undodir"
 
 if vim.fn.isdirectory(undo_path) == 0 then
-	vim.fn.mkdir(undo_path, "p", 0700)
+  vim.fn.mkdir(undo_path, "p", 0700)
 end
 
 vim.o.undodir = undo_path
@@ -27,7 +27,7 @@ vim.opt.incsearch = true
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
-vim.opt.isfname: append("@-@")
+vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
