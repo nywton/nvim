@@ -16,7 +16,16 @@ return require('packer').startup(function(use)
 
   use 'tpope/vim-rails'
 
-  use({ 'rose-pine/neovim', as = 'rose-pine' })
+  -- Theme color scheme
+  -- use({ 'rose-pine/neovim', as = 'rose-pine' })
+
+  use { "catppuccin/nvim", as = "catppuccin" }
+
+  -- https://github.com/nvim-lualine/lualine.nvim
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+  }
 
   use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
   use('nvim-treesitter/playground')
@@ -37,6 +46,7 @@ return require('packer').startup(function(use)
   use('mbbill/undotree')
 
   use('tpope/vim-fugitive')
+  use('lewis6991/gitsigns.nvim')
 
   use { 'mihyaeru21/nvim-lspconfig-bundler', requires = 'neovim/nvim-lspconfig' }
 
