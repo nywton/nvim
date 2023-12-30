@@ -51,7 +51,6 @@ vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/kyoris/packer.lua<
 vim.keymap.set("n", "<leader>km", "<cmd>e ~/.config/nvim/lua/kyoris/remap.lua<CR>");
 
 
-vim.keymap.set("n", "<leader>w", "<C-w>");
 vim.keymap.set('n', '<leader><Tab>', '<C-w>w', { noremap = true, silent = true })
 
 -- Git
