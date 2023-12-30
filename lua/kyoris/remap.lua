@@ -50,6 +50,10 @@ vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/kyoris/packer.lua<CR>");
 vim.keymap.set("n", "<leader>km", "<cmd>e ~/.config/nvim/lua/kyoris/remap.lua<CR>");
 
+
+vim.keymap.set("n", "<leader>w", "<C-w>");
+vim.keymap.set('n', '<leader><Tab>', '<C-w>w', { noremap = true, silent = true })
+
 -- Git
 
 vim.keymap.set("n", "<leader>gg", "<cmd>:Git<CR>");
