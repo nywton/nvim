@@ -1,12 +1,16 @@
 vim.g.mapleader = " "
 
 -- reloads the nvim config file
-vim.keymap.set('n', '<Leader><Leader>', ':source $MYVIMRC<CR>', { silent = false })
+vim.keymap.set('n', '<Leader>rl', ':source $MYVIMRC<CR>', { silent = false })
 
 -- nvim file three
 vim.keymap.set("n", "<leader>e", "<cmd>:NvimTreeFindFileToggle<CR>")
 vim.keymap.set("n", "<leader>w", vim.cmd.w)
 vim.keymap.set("n", "<leader>q", vim.cmd.q)
+--
+-- Remap record macro and exit vim
+vim.keymap.set("n", '<leader><leader>', 'q')
+vim.keymap.set("n", 'q', vim.cmd.q)
 
 -- disables arrow keys in normal mode
 vim.keymap.set("n", "<Up>", "<Nop>")
@@ -55,7 +59,6 @@ vim.keymap.set("n", "<leader>w", "<C-w>");
 vim.keymap.set('n', '<leader><Tab>', '<C-w>w', { noremap = true, silent = true })
 
 -- Git
-
 vim.keymap.set("n", "<leader>gg", "<cmd>:Git<CR>");
 vim.keymap.set("n", "<leader>t", "<cmd>:Telescope<CR>");
 vim.keymap.set("n", "<leader>ggd", "<cmd>:Gvdiff<CR>");
