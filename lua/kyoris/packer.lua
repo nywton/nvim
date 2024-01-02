@@ -18,7 +18,6 @@ return require('packer').startup(function(use)
 
   -- Theme color scheme
   -- use({ 'rose-pine/neovim', as = 'rose-pine' })
-
   use { "catppuccin/nvim", as = "catppuccin" }
 
   -- https://github.com/nvim-lualine/lualine.nvim
@@ -51,18 +50,18 @@ return require('packer').startup(function(use)
   use { 'mihyaeru21/nvim-lspconfig-bundler', requires = 'neovim/nvim-lspconfig' }
 
   -- Lua
-  use {
-    "folke/which-key.nvim",
-    config = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-      require("which-key").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    end
-  }
+  -- use {
+  --   "folke/which-key.nvim",
+  --   config = function()
+  --     vim.o.timeout = true
+  --     vim.o.timeoutlen = 300
+  --     require("which-key").setup {
+  --       -- your configuration comes here
+  --       -- or leave it empty to use the default settings
+  --       -- refer to the configuration section below
+  --     }
+  --   end
+  -- }
 
   use {
     'VonHeikemen/lsp-zero.nvim',

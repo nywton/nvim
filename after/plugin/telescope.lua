@@ -30,4 +30,6 @@ vim.keymap.set('n', '<leader>f', builtin.find_files, {})
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>s', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>b', builtin.buffers, {})
-vim.keymap.set('n', '<leader>h', builtin.help_tags, {})
+vim.keymap.set('n', '<leader>hh', builtin.help_tags, {})
+vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+vim.keymap.set("n", "<leader>t", "<cmd>:Telescope<CR>");

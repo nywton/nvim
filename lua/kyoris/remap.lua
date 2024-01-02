@@ -62,8 +62,3 @@ vim.keymap.set("n", "<leader>km", "<cmd>e ~/.config/nvim/lua/kyoris/remap.lua<CR
 
 
 vim.keymap.set('n', '<leader><Tab>', '<C-w>w', { noremap = true, silent = true })
-
--- Git
-vim.keymap.set("n", "<leader>gg", "<cmd>:Git<CR>");
-vim.keymap.set("n", "<leader>t", "<cmd>:Telescope<CR>");
-vim.keymap.set("n", "<leader>ggd", "<cmd>:Gvdiff<CR>");
