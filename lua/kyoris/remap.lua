@@ -55,10 +55,17 @@ vim.keymap.set("n", "#", "#zz")
 vim.keymap.set("n", "*", "*zz")
 
 
+-- refactor object
 vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/kyoris/packer.lua<CR>");
 vim.keymap.set("n", "<leader>km", "<cmd>e ~/.config/nvim/lua/kyoris/remap.lua<CR>");
 
 
+-- Panes shortcuts
 vim.keymap.set('n', '<leader><Tab>', '<C-w>w', { noremap = true, silent = true })
+-- Resize split panes using Ctrl + arrow keys
+vim.keymap.set('n', '<C-Right>', '<C-w>>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-Left>', '<C-w><', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-Up>', '<C-w>+', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-Down>', '<C-w>-', { noremap = true, silent = true })
