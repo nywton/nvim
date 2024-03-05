@@ -1,9 +1,9 @@
 require('telescope').setup {
   defaults = {
     layout_config = {
-      width = 0.9,  -- Set the width to 90% of the available space
-      height = 0.9, -- Set the height to 90% of the available space
-      preview_width = 0.5,
+      width = 0.95,  -- Set the width to 90% of the available space
+      height = 0.95, -- Set the height to 90% of the available space
+      preview_width = 0.55,
     }
   },
   pickers = {
@@ -60,9 +60,11 @@ local function find_files(opts)
 end
 
 vim.keymap.set('n', '<leader>f', find_files, {})
+vim.keymap.set('v', '<leader>f', 'y<ESC>:Telescope find_files default_text=<c-r>0<CR>', default_opts)
 vim.keymap.set('n', '<leader>th', builtin.help_tags, {})
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>s', builtin.live_grep, {})
+vim.keymap.set('v', '<leader>s', 'y<ESC>:Telescope live_grep default_text=<c-r>0<CR>', default_opts)
 vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 vim.keymap.set('n', '<leader>hh', builtin.help_tags, {})
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
