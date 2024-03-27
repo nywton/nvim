@@ -69,3 +69,10 @@ vim.keymap.set('n', '<C-Right>', '<C-w>>', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-Left>', '<C-w><', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-Up>', '<C-w>+', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-Down>', '<C-w>-', { noremap = true, silent = true })
+
+vim.keymap.set('i', '<C-Space>', '<Plug>(copilot-accept-word)')
+vim.keymap.set('i', '<C-Enter>', '<Plug>(copilot-accept-line)')
+vim.keymap.set('i', '<C-l>', '<Plug>(copilot-next)', { noremap = false })
+
+
+
