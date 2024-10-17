@@ -1,81 +1,92 @@
-local lsp = require('lsp-zero')
+local mason = require("mason")
+local mason_lspconfig = require("mason-lspconfig")
+local cmp = require("cmp")
+local luasnip = require("luasnip")
 
-lsp.on_attach(function(client, bufnr)
-  -- see :help lsp-zero-keybindings
-  lsp.default_keymaps({ buffer = bufnr })
-  vim.keymap.set('n', '<leader><leader>', vim.lsp.buf.format)
-end)
-
--- to learn how to use mason.nvim with lsp-zero
--- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guide/integrate-with-mason-nvim.md
-require('mason').setup({})
-require('mason-lspconfig').setup({
-  handlers = {
-    lsp.default_setup,
-
-    -- Install lsp gem by running:
-    -- $ gem install ruby-lsp
-    ruby_ls = function()
-      require('lspconfig').ruby_ls.setup({
-        cmd = { "bundle", "exec", "ruby-lsp" }
-      })
-    end,
-
-    lua_ls = function()
-      require('lspconfig').lua_ls.setup {
-        on_attach = on_attach
-      }
-    end,
-  },
+-- Setup Mason and Mason-LSPConfig
+mason.setup()
+mason_lspconfig.setup({
+  ensure_installed = { "denols", "html", "cssls", "tailwindcss" },
 })
 
-local cmp = require('cmp')
-local cmp_action = require('lsp-zero').cmp_action()
-
+-- Configure nvim-cmp
 cmp.setup({
-  sources = {
-    { name = 'nvim_lsp' },
-  },
-  mapping = {
-    ['<Tab>'] = cmp_action.tab_complete(),
-    ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
-    ['<C-y>'] = cmp.mapping.confirm({ select = false }),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<Up>'] = cmp.mapping.select_prev_item({ behavior = 'select' }),
-    ['<Down>'] = cmp.mapping.select_next_item({ behavior = 'select' }),
-    ['<C-p>'] = cmp.mapping(function()
-      if cmp.visible() then
-        cmp.select_prev_item({ behavior = 'insert' })
-      else
-        cmp.complete()
-      end
-    end),
-    ['<C-n>'] = cmp.mapping(function()
-      if cmp.visible() then
-        cmp.select_next_item({ behavior = 'insert' })
-      else
-        cmp.complete()
-      end
-    end),
+  formatting = {
+    format = require("nvim-highlight-colors").format
   },
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
+  mapping = {
+    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+  },
+  sources = cmp.config.sources({
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
+  }, {
+    { name = "buffer" },
+    { name = "path" },
+  }),
 })
 
+-- Integrate cmp with LSP capabilities
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
--- -- Keybinds
--- local on_attach = function(_, bufnr)
---   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, {})
---   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
---   vim.keymap.set('n', 'gt', vim.lsp.buf.implementation, {})
---   vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, {})
---   vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
---   vim.keymap.set('n', '<space><space>', function()
---     vim.lsp.buf.format { async = true }
---   end, opts)
--- end
---
---
+-- Setup LSP servers with Mason-LSPConfig
+mason_lspconfig.setup_handlers({
+  function(server_name)
+    require("lspconfig")[server_name].setup({
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        -- Format on save
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          buffer = bufnr,
+          callback = function()
+            vim.lsp.buf.format({ bufnr = bufnr })
+          end,
+        })
+
+        -- LSP keymaps
+        local opts = { noremap = true, silent = true, buffer = bufnr }
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+        vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+        -- vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+        vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, opts)
+
+        -- Format with <leader><leader>
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader><leader>', '',
+          { callback = vim.lsp.buf.format, noremap = true, silent = true })
+      end,
+    })
+  end,
+})

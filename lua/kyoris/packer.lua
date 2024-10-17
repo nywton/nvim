@@ -16,7 +16,7 @@ return require('packer').startup(function(use)
   -- use 'vim-airline/vim-airline'
   -- use 'vim-airline/vim-airline-themes'
 
-  use 'tpope/vim-rails'
+  -- use 'tpope/vim-rails'
 
   -- Theme color scheme
   -- use({ 'rose-pine/neovim', as = 'rose-pine' })
@@ -31,22 +31,6 @@ return require('packer').startup(function(use)
   use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
   use('nvim-treesitter/playground')
 
-  use {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v3.x',
-    requires = {
-      --- Uncomment the two plugins below if you want to manage the language servers from neovim
-      {'williamboman/mason.nvim'},
-      {'williamboman/mason-lspconfig.nvim'},
-
-      -- LSP Support
-      {'neovim/nvim-lspconfig'},
-      -- Autocompletion
-      {'hrsh7th/nvim-cmp'},
-      {'hrsh7th/cmp-nvim-lsp'},
-      {'L3MON4D3/LuaSnip'},
-    }
-  }
 
   use {
     'numToStr/Comment.nvim',
@@ -56,11 +40,10 @@ return require('packer').startup(function(use)
   }
 
   use('nvim-tree/nvim-tree.lua')
-  -- use('nvim-tree/nvim-web-devicons')
 
   -- https://github.com/lukas-reineke/indent-blankline.nvim
-  -- Visual markup for scopes 
-  use ("lukas-reineke/indent-blankline.nvim")
+  -- Visual markup for scopes
+  use("lukas-reineke/indent-blankline.nvim")
 
   use('theprimeagen/harpoon')
 
@@ -68,6 +51,28 @@ return require('packer').startup(function(use)
 
   use('tpope/vim-fugitive')
   use('lewis6991/gitsigns.nvim')
+
+  -- LSP
+  use {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+  }
+
+  -- LSP completions
+  use {
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
+    'L3MON4D3/LuaSnip',
+    'saadparwaiz1/cmp_luasnip'
+  }
+
+  -- Hash Colors
+  use { 'brenoprata10/nvim-highlight-colors' }
+
 
   -- Lua
   use {
@@ -81,5 +86,4 @@ return require('packer').startup(function(use)
       }
     end
   }
-
 end)
