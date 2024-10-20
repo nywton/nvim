@@ -39,6 +39,8 @@ return require('packer').startup(function(use)
     end
   }
 
+  use 'nvim-tree/nvim-web-devicons'
+
   use('nvim-tree/nvim-tree.lua')
 
   -- https://github.com/lukas-reineke/indent-blankline.nvim
@@ -58,6 +60,8 @@ return require('packer').startup(function(use)
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
   }
+
+  use 'ryanoasis/vim-devicons'
 
   -- LSP completions
   use {

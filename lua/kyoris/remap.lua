@@ -58,8 +58,12 @@ vim.keymap.set("n", "*", "*zz")
 -- refactor object
 vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/kyoris/packer.lua<CR>");
-vim.keymap.set("n", "<leader>km", "<cmd>e ~/.config/nvim/lua/kyoris/remap.lua<CR>");
+local userprofile = os.getenv("USERPROFILE")
+local nvim_config_dir = userprofile .. "/AppData/Local/nvim"
+
+-- Change to the Neovim configuration directory and open the file
+vim.keymap.set("n", "<leader>vpp", "<cmd>cd " .. nvim_config_dir .. " | e lua/kyoris/packer.lua<CR>")
+vim.keymap.set("n", "<leader>km", "<cmd>cd " .. nvim_config_dir .. " | e lua/kyoris/remap.lua<CR>")
 
 
 -- Panes shortcuts

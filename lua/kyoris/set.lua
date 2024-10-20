@@ -13,7 +13,7 @@ vim.opt.wrap = false
 vim.opt.swapfile = false
 vim.opt.backup = false
 
-local undo_path = os.getenv("HOME") .. "/.nvim/undodir"
+local undo_path = os.getenv("USERPROFILE") .. "/AppData/Local/nvim/undo"
 
 if vim.fn.isdirectory(undo_path) == 0 then
   vim.fn.mkdir(undo_path, "p", 0700)

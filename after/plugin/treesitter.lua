@@ -10,6 +10,7 @@ require'nvim-treesitter.configs'.setup {
     "javascript",
     "json",
     "lua",
+    "go",
     "python",
     "query",
     "ruby",
