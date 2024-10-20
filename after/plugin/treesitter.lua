@@ -1,5 +1,5 @@
-require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all" (the five listed parsers should always be installed)
+-- Treesitter configuration
+require 'nvim-treesitter.configs'.setup {
   ensure_installed = {
     "c",
     "css",
@@ -20,26 +20,28 @@ require'nvim-treesitter.configs'.setup {
     "vimdoc"
   },
 
-  -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
-
-  -- Automatically install missing parsers when entering buffer
-  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = true,
-
-  -- List of parsers to ignore installing (or "all")
-  -- ignore_install = { "javascript" },
-
-  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
-  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
 
   highlight = {
     enable = true,
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
+
+  indent = {
+    enable = true,              -- Enable Treesitter-based indentation
+    disable = { "javascript" }, -- Disable Treesitter indent for JavaScript if needed
+  },
 }
+
+-- Set tab and shift width for Go files
+vim.cmd([[autocmd FileType go setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab]])
+
+-- Set tab and shift width for Go template files
+vim.cmd([[autocmd FileType tmpl,html setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab]])
+
+-- Automatically format Go files on save
+vim.cmd([[autocmd BufWritePre *.go silent! execute '!gofmt -w ' . expand('%:p')]])
+
+-- Automatically format Go template files on save using gofmt
+vim.cmd([[autocmd BufWritePre *.tmpl,*.tpl silent! execute '!gofmt -w ' . expand('%:p')]])

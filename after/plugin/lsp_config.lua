@@ -5,7 +5,7 @@ local cmp = require("cmp")
 
 mason.setup()
 mason_lspconfig.setup({
-  ensure_installed = { "denols", "html", "cssls", "tailwindcss" },
+  ensure_installed = { "denols", "html", "cssls", "tailwindcss", "gopls", "templ", "htmx" },
 })
 
 -- Configure nvim-cmp
