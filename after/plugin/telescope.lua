@@ -1,4 +1,5 @@
 require('telescope').setup {
+  file_ignore_patterns = { "node_modules" },
   defaults = {
     layout_config = {
       width = 0.95,  -- Set the width to 90% of the available space
@@ -48,12 +49,12 @@ local function find_files(opts)
               print "No picker(s) cached"
               return
             end
-            last_find_files = cached_pickers[1]  -- last picker is always 1st
+            last_find_files = cached_pickers[1] -- last picker is always 1st
           end
-        }    
+        }
         return true
       end
-    } 
+    }
   else
     require "telescope.builtin".resume { picker = last_find_files }
   end

@@ -6,9 +6,9 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.3',
+    'nvim-telescope/telescope.nvim', tag = '0.1.8',
     -- or                            , branch = '0.1.x',
-    requires = { { 'nvim-lua/plenary.nvim' } }
+    requires = { {'nvim-lua/plenary.nvim'} }
   }
 
   use('m4xshen/autoclose.nvim')
@@ -39,6 +39,8 @@ return require('packer').startup(function(use)
     end
   }
 
+  use 'nvim-tree/nvim-web-devicons'
+
   use('nvim-tree/nvim-tree.lua')
 
   -- https://github.com/lukas-reineke/indent-blankline.nvim
@@ -58,6 +60,8 @@ return require('packer').startup(function(use)
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
   }
+
+  use 'ryanoasis/vim-devicons'
 
   -- LSP completions
   use {
