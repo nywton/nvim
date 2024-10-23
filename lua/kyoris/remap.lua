@@ -8,7 +8,7 @@ vim.keymap.set('n', '<Leader>rl', ':source $MYVIMRC<CR>', { silent = false })
 
 -- nvim file three
 vim.keymap.set("n", "<leader>e", "<cmd>:NvimTreeFindFileToggle<CR>")
-vim.keymap.set("n", "<leader>w", vim.cmd.w)
+vim.keymap.set("n", "<leader>w", "<cmd>w!<CR>")
 vim.keymap.set("n", "<leader>q", "<cmd>:q!<CR>")
 --
 --
@@ -74,6 +74,18 @@ vim.keymap.set('n', '<C-Left>', '<C-w><', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-Up>', '<C-w>+', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-Down>', '<C-w>-', { noremap = true, silent = true })
 
-vim.keymap.set('i', '<C-Space>', '<Plug>(copilot-accept-word)')
-vim.keymap.set('i', '<C-Enter>', '<Plug>(copilot-accept-line)')
-vim.keymap.set('i', '<C-l>', '<Plug>(copilot-next)', { noremap = false })
+-- Clear current suggestion	codeium#Clear()	<C-]>
+-- Next suggestion	codeium#CycleCompletions(1)	<M-]>
+-- Previous suggestion	codeium#CycleCompletions(-1)	<M-[>
+-- Insert suggestion	codeium#Accept()	<Tab>
+-- Manually trigger suggestion	codeium#Complete()	<M-Bslash>
+-- Accept word from suggestion	codeium#AcceptNextWord()	<C-k>
+-- Accept line from suggestion	codeium#AcceptNextLine()	<C-l>
+--
+-- https://github.com/Exafunction/codeium.vim?tab=readme-ov-file
+vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+vim.keymap.set('i', '<C-f>', function() return vim.fn['codeium#CycleCompletions'](1) end,
+  { expr = true, silent = true })
+vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end,
+  { expr = true, silent = true })
+vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })

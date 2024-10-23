@@ -8,7 +8,7 @@ return require('packer').startup(function(use)
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
     -- or                            , branch = '0.1.x',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = { { 'nvim-lua/plenary.nvim' } }
   }
 
   use('m4xshen/autoclose.nvim')
@@ -88,6 +88,25 @@ return require('packer').startup(function(use)
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
       }
+    end
+  }
+
+  -- Copilot alternative
+  -- Usage: :Codeium Auth or :help codemium
+  -- Remove the `use` here if you're using folke/lazy.nvim.
+  -- https://github.com/Exafunction/codeium.vim?tab=readme-ov-file
+  use {
+    'Exafunction/codeium.vim',
+    config = function()
+      -- vim.g.codeium_disable_bindings = 0
+      vim.vim.g.codeium_no_map_tab = 1
+      -- Change '<C-g>' here to any keycode you like.
+      -- vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+      -- vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end,
+      --   { expr = true, silent = true })
+      -- vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end,
+      --   { expr = true, silent = true })
+      -- vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
     end
   }
 end)
