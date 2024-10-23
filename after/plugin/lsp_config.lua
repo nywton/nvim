@@ -5,7 +5,7 @@ local cmp = require("cmp")
 
 mason.setup()
 mason_lspconfig.setup({
-  ensure_installed = { "denols", "html", "cssls", "tailwindcss" },
+  ensure_installed = { "denols", "html", "cssls", "tailwindcss", "gopls", "templ" },
 })
 
 -- Configure nvim-cmp
@@ -18,7 +18,7 @@ cmp.setup({
   mapping = {
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete(),
+    -- ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-E>"] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
     ["<Tab>"] = cmp.mapping(function(fallback)
