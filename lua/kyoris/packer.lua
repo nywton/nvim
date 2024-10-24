@@ -95,19 +95,33 @@ return require('packer').startup(function(use)
   -- Usage: :Codeium Auth or :help codemium
   -- Remove the `use` here if you're using folke/lazy.nvim.
   -- https://github.com/Exafunction/codeium.vim?tab=readme-ov-file
-  -- use {
-  --   'Exafunction/codeium.vim',
-  --   config = function()
-  --     -- vim.g.codeium_disable_bindings = 0
-  --     vim.vim.g.codeium_no_map_tab = 1
-  --     -- Change '<C-g>' here to any keycode you like.
-  --     -- vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
-  --     -- vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end,
-  --     --   { expr = true, silent = true })
-  --     -- vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end,
-  --     --   { expr = true, silent = true })
-  --     -- vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
-  --   end
-  -- }
-end)
+  -- Clear current suggestion	codeium#Clear()	<C-]>
+  -- Next suggestion	codeium#CycleCompletions(1)	<M-]>
+  -- Previous suggestion	codeium#CycleCompletions(-1)	<M-[>
+  -- Insert suggestion	codeium#Accept()	<Tab>
+  -- Manually trigger suggestion	codeium#Complete()	<M-Bslash>
+  -- Accept word from suggestion	codeium#AcceptNextWord()	<C-k>
+  -- Accept line from suggestion	codeium#AcceptNextLine()	<C-l>
+  --
+  -- https://github.com/Exafunction/codeium.vim?tab=readme-ov-file
+  --
+  -- Commands:
+  -- :Codeium Chat
 
+  use {
+    'Exafunction/codeium.vim',
+    config = function()
+      -- vim.g.codeium_disable_bindings = 0
+      -- vim.g.codeium_no_map_tab = 1
+
+      require('vim.keymap').set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end,
+        { expr = true, silent = true })
+      require('vim.keymap').set('i', '<C-f>', function() return vim.fn['codeium#CycleCompletions'](1) end,
+        { expr = true, silent = true })
+      require('vim.keymap').set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end,
+        { expr = true, silent = true })
+      require('vim.keymap').set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end,
+        { expr = true, silent = true })
+    end
+  }
+end)

@@ -8,7 +8,7 @@ vim.keymap.set('n', '<Leader>rl', ':source $MYVIMRC<CR>', { silent = false })
 
 -- nvim file three
 vim.keymap.set("n", "<leader>e", "<cmd>:NvimTreeFindFileToggle<CR>")
-vim.keymap.set("n", "<leader>w", vim.cmd.w)
+vim.keymap.set("n", "<leader>w", "<cmd>:w!<CR>")
 vim.keymap.set("n", "<leader>q", "<cmd>:q!<CR>")
 --
 --
@@ -70,9 +70,7 @@ vim.keymap.set('n', '<C-Left>', '<C-w><', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-Up>', '<C-w>+', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-Down>', '<C-w>-', { noremap = true, silent = true })
 
-vim.keymap.set('i', '<C-Space>', '<Plug>(copilot-accept-word)')
-vim.keymap.set('i', '<C-Enter>', '<Plug>(copilot-accept-line)')
-vim.keymap.set('i', '<C-l>', '<Plug>(copilot-next)', { noremap = false })
-
-
-
+-- Copilot
+-- vim.keymap.set('i', '<C-Space>', '<Plug>(copilot-accept-word)')
+-- vim.keymap.set('i', '<C-Enter>', '<Plug>(copilot-accept-line)')
+-- vim.keymap.set('i', '<C-l>', '<Plug>(copilot-next)', { noremap = false })
