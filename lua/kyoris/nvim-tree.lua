@@ -10,12 +10,12 @@ require("nvim-tree").setup({
   --   sorter = "case_sensitive",
   -- },
   view = {
-    width = 40,
+    width = 25,
   },
   renderer = {
     group_empty = true,
   },
-  -- filters = {
-  --   dotfiles = true,
-  -- },
+  filters = {
+    dotfiles = false,
+  },
 })
