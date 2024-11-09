@@ -5,7 +5,7 @@ local cmp = require("cmp")
 
 mason.setup()
 mason_lspconfig.setup({
-  ensure_installed = { "html", "cssls", "tailwindcss", "gopls", "ruby_lsp" },
+  ensure_installed = { "html", "cssls", "tailwindcss", "gopls", "ruby_lsp", "elixirls" },
 })
 
 -- Setup LSP servers with Mason-LSPConfig
@@ -23,6 +23,14 @@ mason_lspconfig.setup_handlers({
             end,
           })
         end
+
+        -- Automatic hover documentation when available
+        vim.api.nvim_create_autocmd("CursorHold", {
+          buffer = bufnr,
+          callback = function()
+            vim.lsp.buf.hover()
+          end,
+        })
 
         -- LSP keymaps
         local opts = { noremap = true, silent = true, buffer = bufnr }
@@ -54,7 +62,6 @@ mason_lspconfig.setup_handlers({
 --   init_options = { enable = true, lint = true, unstable = true },
 --   root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
 -- })
-
 
 -- Setup for CSS Language Server
 lspconfig.cssls.setup({
@@ -88,30 +95,6 @@ lspconfig.ruby_lsp.setup({
     },
   },
 })
---
-
--- Setup for Standardrb Language Server
--- https://github.com/standardrb/standardrb
--- installs :
--- $ gem install standard
--- lspconfig.standardrb.setup({
---   on_attach = on_attach,
---   filetypes = { "ruby" },
---   cmd = { "~/.rbenv/shims/standardrb", "--lsp" },
--- })
-
--- Autocommand for Ruby filetype to ensure the signcolumn is set
--- vim.opt.signcolumn = "yes" -- Always show sign column
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = "ruby",
---   group = vim.api.nvim_create_augroup("RubyLSP", { clear = true }),
---   callback = function()
---     vim.lsp.start {
---       name = "standard",
---       cmd = { "~/.rbenv/shims/standardrb", "--lsp" },
---     }
---   end,
--- })
 
 -- Configure nvim-cmp (auto-completion)
 cmp.setup({
@@ -123,9 +106,16 @@ cmp.setup({
   mapping = {
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    -- ["<C-Space>"] = cmp.mapping.complete(),
+
+    -- Use <C-Space> to manually trigger completion
+    ["<C-Space>"] = cmp.mapping.complete(),
+
     ["<C-E>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+
+    -- Prevent Enter from auto-selecting a completion
+    ["<CR>"] = cmp.mapping.confirm({
+      select = false, -- Ensures Enter only confirms if an item is already selected
+    }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -135,6 +125,7 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s" }),
+
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
@@ -152,4 +143,15 @@ cmp.setup({
     { name = "buffer" },
     { name = "path" },
   }),
+})
+
+-- Elixir Language Server configuration
+lspconfig.elixirls.setup({
+  on_attach = on_attach,
+  settings = {
+    elixirLS = {
+      dialyzerEnabled = false,
+      fetchDeps = false,
+    },
+  },
 })

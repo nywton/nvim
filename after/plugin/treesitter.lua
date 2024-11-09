@@ -19,6 +19,8 @@ require 'nvim-treesitter.configs'.setup {
     "vim",
     "vimdoc",
     "markdown",
+    "eex",
+    "heex",
     "yaml",
     "sql"
   },
@@ -39,13 +41,13 @@ require 'nvim-treesitter.configs'.setup {
 }
 
 -- Set tab and shift width for Go files
---vim.cmd([[autocmd FileType go setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab]])
+vim.cmd([[autocmd FileType go setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab]])
 
 -- Set tab and shift width for Go template files
 -- vim.cmd([[autocmd FileType tmpl,html setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab]])
 
 -- Automatically format Go files on save
--- vim.cmd([[autocmd BufWritePre *.go silent! execute '!gofmt -w ' . expand('%:p')]])
+vim.cmd([[autocmd BufWritePre *.go silent! execute '!gofmt -w ' . expand('%:p')]])
 
 -- Automatically format Go template files on save using gofmt
 -- vim.cmd([[autocmd BufWritePre *.tmpl,*.tpl silent! execute '!gofmt -w ' . expand('%:p')]])
