@@ -1,7 +1,6 @@
 local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
 local lspconfig = require("lspconfig")
-local cmp = require("cmp")
 
 mason.setup()
 mason_lspconfig.setup({
@@ -94,55 +93,6 @@ lspconfig.ruby_lsp.setup({
       -- Include any other RuboCop settings as needed
     },
   },
-})
-
--- Configure nvim-cmp (auto-completion)
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  mapping = {
-    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-
-    -- Use <C-Space> to manually trigger completion
-    ["<C-Space>"] = cmp.mapping.complete(),
-
-    ["<C-E>"] = cmp.mapping.abort(),
-
-    -- Prevent Enter from auto-selecting a completion
-    ["<CR>"] = cmp.mapping.confirm({
-      select = false, -- Ensures Enter only confirms if an item is already selected
-    }),
-    ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-  },
-  sources = cmp.config.sources({
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
-  }, {
-    { name = "buffer" },
-    { name = "path" },
-  }),
 })
 
 -- Elixir Language Server configuration
