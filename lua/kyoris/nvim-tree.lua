@@ -12,6 +12,11 @@ require("nvim-tree").setup({
   view = {
     width = 40,
   },
+  actions = {
+    open_file = {
+      quit_on_open = true, -- Closes nvim-tree after opening a file
+    },
+  },
   renderer = {
     group_empty = true,
   },
