@@ -79,3 +79,13 @@ vim.keymap.set('n', '<C-Down>', '<C-w>-', { noremap = true, silent = true })
 -- vim.keymap.set('i', '<C-Space>', '<Plug>(copilot-accept-word)')
 -- vim.keymap.set('i', '<C-Enter>', '<Plug>(copilot-accept-line)')
 -- vim.keymap.set('i', '<C-l>', '<Plug>(copilot-next)', { noremap = false })
+--
+
+-- runs mix format on current file
+vim.keymap.set("n", "<leader>mf", "<cmd>silent! !mix format %<CR>")
+
+-- Autocommand to run `mix format` on save for .ex, .exs, .heex files
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = { "*.ex", "*.exs", "*.heex" },
+  command = "silent! !mix format %",
+})

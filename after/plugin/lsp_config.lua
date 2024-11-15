@@ -5,7 +5,7 @@ local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 mason.setup()
 mason_lspconfig.setup({
-  ensure_installed = { "html", "cssls", "tailwindcss", "gopls", "ruby_lsp", "elixirls" },
+  ensure_installed = { "html", "cssls", "tailwindcss", "gopls", "ruby_lsp", "nextls" },
 })
 
 -- Capabilities for enhanced LSP completion
@@ -91,13 +91,31 @@ lspconfig.ruby_lsp.setup({
   },
 })
 
--- Elixir Language Server configuration
-lspconfig.elixirls.setup({
+lspconfig.nextls.setup({
   on_attach = on_attach,
-  settings = {
-    elixirLS = {
-      dialyzerEnabled = false,
-      fetchDeps = false,
+  capabilities = capabilities,
+  filetypes = { "heex", "eex" },
+  cmd = { "nextls", "--stdio" },
+  init_options = {
+    extensions = {
+      credo = { enable = true }
     },
-  },
+    experimental = {
+      completions = { enable = false }
+    }
+  }
 })
+
+-- lspconfig.elixirls.setup({
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   settings = {
+--     elixirLS = {
+--       dialyzerEnabled = true,
+--       fetchDeps = true,
+--     },
+--   },
+--   filetypes = { "elixir" },
+--   cmd = { " ~/.local/share/nvim/mason/bin/elixir-ls" },
+-- })
+--
