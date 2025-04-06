@@ -89,3 +89,35 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   pattern = { "*.ex", "*.exs", "*.heex" },
   command = "silent! !mix format %",
 })
+
+
+-- Copy file name
+-- <leader>cf: Copy file name
+-- <leader>cl: Copy absolute path
+--
+-- Copy file path to clipboard in different formats based on OS
+if vim.loop.os_uname().sysname == "Windows_NT" then
+  -- Copy relative path with backslashes
+  vim.keymap.set("n", "<leader>cs", function()
+    vim.fn.setreg("+", vim.fn.expand("%"):gsub("/", "\\"))
+  end, { desc = "Copy relative file path with \\" })
+
+  -- Copy absolute path with backslashes
+  vim.keymap.set("n", "<leader>cl", function()
+    vim.fn.setreg("+", vim.fn.expand("%:p"):gsub("/", "\\"))
+  end, { desc = "Copy absolute file path with \\" })
+
+  -- Copy 8.3 DOS short format with backslashes
+  vim.keymap.set("n", "<leader>c8", function()
+    vim.fn.setreg("+", vim.fn.expand("%:p:8"):gsub("/", "\\"))
+  end, { desc = "Copy 8.3 DOS file path with \\" })
+else
+  -- Non-Windows: use normal path
+  vim.keymap.set("n", "<leader>cs", function()
+    vim.fn.setreg("+", vim.fn.expand("%"))
+  end, { desc = "Copy relative file path" })
+
+  vim.keymap.set("n", "<leader>cl", function()
+    vim.fn.setreg("+", vim.fn.expand("%:p"))
+  end, { desc = "Copy absolute file path" })
+end
