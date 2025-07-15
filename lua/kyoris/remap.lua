@@ -6,9 +6,18 @@ vim.keymap.set('n', ';', ':', { noremap = true })
 -- reloads the nvim config file
 vim.keymap.set('n', '<Leader>rl', ':source $MYVIMRC<CR>', { silent = false })
 
+-- Auto indent whole file
+vim.keymap.set('n', '<leader>i', function()
+  local pos = vim.api.nvim_win_get_cursor(0) -- save cursor {row, col}
+  vim.cmd('normal! gg=G')                    -- indent the whole file
+  vim.api.nvim_win_set_cursor(0, pos)        -- restore cursor
+end, { desc = "Auto-indent whole file", silent = true })
+
+-- copy file path
 vim.keymap.set('n', '<leader>cp', function()
   vim.fn.setreg('+', vim.fn.expand('%:p'))
 end, { desc = "Copy file path to clipboard" })
+
 -- nvim file three
 vim.keymap.set("n", "<leader>e", "<cmd>:NvimTreeFindFileToggle<CR>")
 vim.keymap.set("n", "<leader>w", "<cmd>:w!<CR>")
