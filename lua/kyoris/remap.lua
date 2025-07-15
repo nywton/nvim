@@ -6,6 +6,9 @@ vim.keymap.set('n', ';', ':', { noremap = true })
 -- reloads the nvim config file
 vim.keymap.set('n', '<Leader>rl', ':source $MYVIMRC<CR>', { silent = false })
 
+vim.keymap.set('n', '<leader>cp', function()
+  vim.fn.setreg('+', vim.fn.expand('%:p'))
+end, { desc = "Copy file path to clipboard" })
 -- nvim file three
 vim.keymap.set("n", "<leader>e", "<cmd>:NvimTreeFindFileToggle<CR>")
 vim.keymap.set("n", "<leader>w", "<cmd>:w!<CR>")
