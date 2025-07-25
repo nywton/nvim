@@ -1,3 +1,6 @@
+-- NOTE: Ensure you have installed the LSP servers you want to use
+--  npm install -g @tailwindcss/language-server
+--
 local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
 local lspconfig = require("lspconfig")
@@ -5,7 +8,7 @@ local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 mason.setup()
 mason_lspconfig.setup({
-  ensure_installed = { "html", "cssls", "tailwindcss", "gopls", "ruby_lsp", "nextls" },
+  ensure_installed = { "html", "cssls", "tailwindcss", "gopls", "ruby_lsp", "denols" },
 })
 
 -- Capabilities for enhanced LSP completion
@@ -35,28 +38,23 @@ mason_lspconfig.setup_handlers({
         vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+        vim.keymap.set("n", "<leader>cb", vim.lsp.buf.format, { noremap = true, silent = true })
         vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
         vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
         vim.keymap.set("n", "<leader>E", vim.diagnostic.open_float, opts)
         vim.keymap.set("n", "<leader>Q", vim.diagnostic.setloclist, opts)
-
-        -- Format with <leader><leader> if the server supports formatting
-        if client.server_capabilities.documentFormattingProvider then
-          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader><leader>', '',
-            { callback = vim.lsp.buf.format, noremap = true, silent = true })
-        end
       end,
     })
   end,
 })
 
--- lspconfig.denols.setup({
---   on_attach = on_attach,
---   cmd = { "deno", "lsp" },
---   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "tsx" },
---   init_options = { enable = true, lint = true, unstable = true },
---   root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
--- })
+lspconfig.denols.setup({
+  on_attach = on_attach,
+  cmd = { "deno", "lsp" },
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "tsx" },
+  init_options = { enable = true, lint = true, unstable = true },
+  root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+})
 
 -- Setup for CSS Language Server
 lspconfig.cssls.setup({
@@ -91,6 +89,7 @@ lspconfig.ruby_lsp.setup({
   },
 })
 
+
 lspconfig.nextls.setup({
   on_attach = on_attach,
   capabilities = capabilities,
@@ -106,16 +105,24 @@ lspconfig.nextls.setup({
   }
 })
 
--- lspconfig.elixirls.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
---   settings = {
---     elixirLS = {
---       dialyzerEnabled = true,
---       fetchDeps = true,
---     },
---   },
---   filetypes = { "elixir" },
---   cmd = { " ~/.local/share/nvim/mason/bin/elixir-ls" },
--- })
---
+lspconfig.elixirls.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    elixirLS = {
+      dialyzerEnabled = true,
+      fetchDeps = true,
+    },
+  },
+  filetypes = { "elixir" },
+  cmd = { " ~/.local/share/nvim/mason/bin/elixir-ls" },
+})
+
+
+-- Autoformat on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.ts", "*.js", "*.tsx", "*.jsx" },
+  callback = function()
+    vim.lsp.buf.format()
+  end,
+})
