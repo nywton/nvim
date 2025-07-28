@@ -1,127 +1,138 @@
--- NOTE: Ensure you have installed the LSP servers you want to use
---  npm install -g @tailwindcss/language-server
---
 local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
 local lspconfig = require("lspconfig")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
+local util = require("lspconfig.util")
 
+-- Setup Mason
 mason.setup()
+
+-- Ensure common LSPs are installed
 mason_lspconfig.setup({
-  ensure_installed = { "html", "cssls", "tailwindcss", "gopls", "ruby_lsp", "denols" },
+  ensure_installed = {
+    "html",
+    "cssls",
+    "tailwindcss",
+    "gopls",
+    "ruby_lsp",
+    "ts_ls",
+    "denols",
+  },
 })
 
--- Capabilities for enhanced LSP completion
+-- Common capabilities
 local capabilities = cmp_nvim_lsp.default_capabilities()
 
--- Setup LSP servers with Mason-LSPConfig
-mason_lspconfig.setup_handlers({
-  function(server_name)
-    require("lspconfig")[server_name].setup({
-      capabilities = capabilities,
-      on_attach = function(client, bufnr)
-        -- Format on save only if the server supports formatting
-        if client.server_capabilities.documentFormattingProvider then
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = bufnr,
-            callback = function()
-              vim.lsp.buf.format({ bufnr = bufnr })
-            end,
-          })
-        end
+-- on_attach: common keymaps + format on save
+local function on_attach(client, bufnr)
+  local bufmap = function(mode, lhs, rhs)
+    vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = bufnr })
+  end
 
-        -- Automatic hover documentation when available
-        local opts = { noremap = true, silent = true, buffer = bufnr }
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-        vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-        vim.keymap.set("n", "<leader>cb", vim.lsp.buf.format, { noremap = true, silent = true })
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-        vim.keymap.set("n", "<leader>E", vim.diagnostic.open_float, opts)
-        vim.keymap.set("n", "<leader>Q", vim.diagnostic.setloclist, opts)
+  -- Format before save if supported
+  if client.server_capabilities.documentFormattingProvider then
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({ bufnr = bufnr })
       end,
     })
+  end
+
+  -- LSP keymaps
+  bufmap("n", "gd", vim.lsp.buf.definition)
+  bufmap("n", "gr", vim.lsp.buf.references)
+  bufmap("n", "gi", vim.lsp.buf.implementation)
+  bufmap("n", "K", vim.lsp.buf.hover)
+  bufmap("n", "<leader>rn", vim.lsp.buf.rename)
+  bufmap("n", "<leader>ca", vim.lsp.buf.code_action)
+  bufmap("n", "<leader>cb", vim.lsp.buf.format)
+  bufmap("n", "[d", vim.diagnostic.goto_prev)
+  bufmap("n", "]d", vim.diagnostic.goto_next)
+  bufmap("n", "<leader>E", vim.diagnostic.open_float)
+  bufmap("n", "<leader>Q", vim.diagnostic.setloclist)
+end
+
+-- Helpers for project detection
+local is_node = function(root_dir)
+  return util.root_pattern("package.json")(root_dir)
+      and not util.root_pattern("deno.json", "deno.jsonc")(root_dir)
+end
+
+local is_deno = function(root_dir)
+  return util.root_pattern("deno.json", "deno.jsonc")(root_dir)
+end
+
+-- ts_ls (Node)
+lspconfig.ts_ls.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = function(fname)
+    if is_node(fname) then
+      return util.root_pattern("package.json")(fname)
+    end
   end,
 })
 
+-- denols (Deno)
 lspconfig.denols.setup({
   on_attach = on_attach,
-  cmd = { "deno", "lsp" },
-  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "tsx" },
-  init_options = { enable = true, lint = true, unstable = true },
-  root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+  capabilities = capabilities,
+  root_dir = function(fname)
+    if is_deno(fname) then
+      return util.root_pattern("deno.json", "deno.jsonc")(fname)
+    end
+  end,
+  init_options = {
+    enable = true,
+    lint = true,
+    unstable = true,
+  },
 })
 
--- Setup for CSS Language Server
-lspconfig.cssls.setup({
-  on_attach = on_attach,
-  filetypes = { "css", "scss", "less" },
-})
-
--- Setup for HTML Language Server
+-- HTML
 lspconfig.html.setup({
   on_attach = on_attach,
+  capabilities = capabilities,
   filetypes = { "html", "htmx" },
 })
 
--- Setup for Ruby Language Server
--- adds :gem install ruby-lsp to Gemfile of project
--- group :development do
---   gem "ruby-lsp", require: false
--- end
+-- CSS
+lspconfig.cssls.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "css", "scss", "less" },
+})
+
+-- TailwindCSS
+lspconfig.tailwindcss.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+-- Ruby LSP
 lspconfig.ruby_lsp.setup({
   on_attach = on_attach,
+  capabilities = capabilities,
   filetypes = { "ruby" },
-  init_options = {
-    formatter = 'auto',
-  },
-  single_file_support = true,
+  init_options = { formatter = "auto" },
   settings = {
     rubocop = {
-      command = 'rubocop',           -- Command to run RuboCop
-      args = { '--format', 'json' }, -- Additional arguments for RuboCop
-      -- Include any other RuboCop settings as needed
+      command = "rubocop",
+      args = { "--format", "json" },
     },
   },
 })
 
-
-lspconfig.nextls.setup({
+-- Go
+lspconfig.gopls.setup({
   on_attach = on_attach,
   capabilities = capabilities,
-  filetypes = { "heex", "eex" },
-  cmd = { "nextls", "--stdio" },
-  init_options = {
-    extensions = {
-      credo = { enable = true }
-    },
-    experimental = {
-      completions = { enable = false }
-    }
-  }
 })
 
-lspconfig.elixirls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    elixirLS = {
-      dialyzerEnabled = true,
-      fetchDeps = true,
-    },
-  },
-  filetypes = { "elixir" },
-  cmd = { " ~/.local/share/nvim/mason/bin/elixir-ls" },
-})
-
-
--- Autoformat on save
+-- Optional: global fallback autoformat (e.g. in TypeScript files)
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.ts", "*.js", "*.tsx", "*.jsx" },
+  pattern = { "*.ts", "*.js", "*.tsx", "*.jsx", "*.json", "*.css", "*.scss", "*.html", "*.md", "*.lua" },
   callback = function()
     vim.lsp.buf.format()
   end,
