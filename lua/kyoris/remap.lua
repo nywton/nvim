@@ -22,6 +22,12 @@ end, { desc = "Copy file path to clipboard" })
 vim.keymap.set("n", "<leader>e", "<cmd>:NvimTreeFindFileToggle<CR>")
 vim.keymap.set("n", "<leader>w", "<cmd>:w!<CR>")
 vim.keymap.set("n", "<leader>q", "<cmd>:q!<CR>")
+vim.keymap.set('n', '<leader>v', '<C-v>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>rm', ':cd ~/.config/nvim | edit lua/kyoris/remap.lua<CR>', {
+  noremap = true,
+  silent = true,
+  desc = "CD to nvim config and open remap.lua"
+})
 --
 --
 -- disables arrow keys in normal mode
@@ -70,6 +76,7 @@ vim.keymap.set("n", "j", "jzz")
 vim.keymap.set("n", "k", "kzz")
 vim.keymap.set("n", "#", "#zz")
 vim.keymap.set("n", "*", "*zz")
+vim.keymap.set("i", "jj", "<Esc>")
 
 
 -- refactor object
