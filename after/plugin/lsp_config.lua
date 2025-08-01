@@ -13,9 +13,9 @@ mason_lspconfig.setup({
     "html",
     "cssls",
     "tailwindcss",
-    "gopls",
-    "ruby_lsp",
-    "ts_ls",
+    -- "gopls",
+    -- "ruby_lsp",
+    -- "ts_ls",
     "denols",
   },
 })
@@ -64,15 +64,15 @@ local is_deno = function(root_dir)
 end
 
 -- ts_ls (Node)
-lspconfig.ts_ls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  root_dir = function(fname)
-    if is_node(fname) then
-      return util.root_pattern("package.json")(fname)
-    end
-  end,
-})
+-- lspconfig.ts_ls.setup({
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   root_dir = function(fname)
+--     if is_node(fname) then
+--       return util.root_pattern("package.json")(fname)
+--     end
+--   end,
+-- })
 
 -- denols (Deno)
 lspconfig.denols.setup({
@@ -111,24 +111,24 @@ lspconfig.tailwindcss.setup({
 })
 
 -- Ruby LSP
-lspconfig.ruby_lsp.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "ruby" },
-  init_options = { formatter = "auto" },
-  settings = {
-    rubocop = {
-      command = "rubocop",
-      args = { "--format", "json" },
-    },
-  },
-})
+-- lspconfig.ruby_lsp.setup({
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   filetypes = { "ruby" },
+--   init_options = { formatter = "auto" },
+--   settings = {
+--     rubocop = {
+--       command = "rubocop",
+--       args = { "--format", "json" },
+--     },
+--   },
+-- })
 
 -- Go
-lspconfig.gopls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-})
+-- lspconfig.gopls.setup({
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+-- })
 
 -- Optional: global fallback autoformat (e.g. in TypeScript files)
 vim.api.nvim_create_autocmd("BufWritePre", {
