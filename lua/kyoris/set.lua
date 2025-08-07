@@ -37,9 +37,9 @@ vim.opt.updatetime = 50
 vim.opt.termguicolors = true
 
 -- WslClipboard
-vim.opt.clipboard = 'unnamedplus'
-
 if vim.fn.has('wsl') == 1 then
+  vim.opt.clipboard = 'unnamedplus'
+
   vim.g.clipboard = {
     name = 'WslClipboard',
     copy = {
