@@ -19,8 +19,6 @@ vim.keymap.set('n', '<leader>cp', function()
   vim.fn.setreg('+', vim.fn.expand('%:p'))
 end, { desc = "Copy absolute file path" })
 
--- Telescope: Search all keymaps
-vim.keymap.set('n', '<leader>ks', require('telescope.builtin').keymaps, { desc = "🔍 Search all keymaps" })
 
 -- Toggle NvimTree file explorer
 vim.keymap.set("n", "<leader>e", "<cmd>:NvimTreeFindFileToggle<CR>", { desc = "Toggle NvimTree" })
@@ -100,7 +98,8 @@ vim.keymap.set("n", "*", "*zz", { desc = "Search forward and center" })
 vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit insert mode" })
 
 -- Replace word under cursor throughout file (interactive)
-vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace word under cursor" })
+vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+  { desc = "Replace word under cursor" })
 
 -- Open packer config
 vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/kyoris/packer.lua<CR>", { desc = "Edit packer.lua" })
@@ -153,4 +152,3 @@ else
     vim.fn.setreg("+", vim.fn.expand("%:p"))
   end, { desc = "Copy absolute path" })
 end
-

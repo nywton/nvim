@@ -48,12 +48,12 @@ local function find_files(opts)
               print "No picker(s) cached"
               return
             end
-            last_find_files = cached_pickers[1]  -- last picker is always 1st
+            last_find_files = cached_pickers[1] -- last picker is always 1st
           end
-        }    
+        }
         return true
       end
-    } 
+    }
   else
     require "telescope.builtin".resume { picker = last_find_files }
   end
@@ -69,3 +69,8 @@ vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 vim.keymap.set('n', '<leader>hh', builtin.help_tags, {})
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>t", "<cmd>:Telescope<CR>");
+--- Telescope:
+vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = "🔍 Search all files" })
+-- Telescope: Search all keymaps
+vim.keymap.set('n', '<leader>ks', require('telescope.builtin').keymaps, { desc = "🔍 Search all keymaps" })
+vim.keymap.set('n', '<leader>gs', require('telescope.builtin').git_status, { desc = "🔍 Search all keymaps" })
