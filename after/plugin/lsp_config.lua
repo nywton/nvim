@@ -4,6 +4,46 @@ local lspconfig = require("lspconfig")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 local util = require("lspconfig.util")
 
+-- ===============================
+-- Diagnostics: inline + popup
+-- ===============================
+-- Faster CursorHold so the popup shows quickly
+vim.o.updatetime = 250
+
+-- Always-on inline diagnostics at end of the line + useful float defaults
+vim.diagnostic.config({
+  virtual_text = {
+    prefix = "●", -- e.g. "■", "▶", "❯"
+    source = "if_many", -- show source if multiple
+    spacing = 2,
+  },
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = "rounded",
+    source = "always",
+    focusable = false,
+    scope = "line", -- show diagnostics for the current line
+  },
+})
+
+-- Auto-open diagnostic float when cursor stops on a line with diagnostics
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    -- Only open if there are diagnostics under cursor
+    local diags = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+    if #diags > 0 then
+      vim.diagnostic.open_float(nil, { focus = false })
+    end
+  end,
+})
+
+-- ===============================
+-- Mason setup
+-- ===============================
+
 -- Setup Mason
 mason.setup()
 
