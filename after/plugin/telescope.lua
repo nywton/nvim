@@ -65,7 +65,7 @@ vim.keymap.set('n', '<leader>th', builtin.help_tags, {})
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>s', builtin.live_grep, {})
 vim.keymap.set('v', '<leader>s', 'y<ESC>:Telescope live_grep default_text=<c-r>0<CR>', default_opts)
-vim.keymap.set('n', '<leader>b', builtin.buffers, {})
+vim.keymap.set('n', '<leader>bb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>hh', builtin.help_tags, {})
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>t", "<cmd>:Telescope<CR>");
