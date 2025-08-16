@@ -6,7 +6,7 @@ local map = vim.keymap.set
 -- Open Fugitive Fullscreen
 map("n", "<leader>gg", "<cmd>0Git<CR>", { desc = "Open Fugitive in fullscreen buffer" })
 -- Open Fugitive in new tab
-map("n", "<leader>gg", "<cmd>tab Git<CR>", { desc = "Open Fugitive in new tab (fullscreen)" })
+-- map("n", "<leader>gg", "<cmd>tab Git<CR>", { desc = "Open Fugitive in new tab (fullscreen)" })
 
 
 map("n", "<leader>gb", "<cmd>:Git blame<CR>");
@@ -14,8 +14,18 @@ map("n", "<leader>gl", "<cmd>:Git log<CR>");
 
 -- Git Workflow
 -- map("n", "<leader>gs", "<cmd>Git status<CR>", { desc = "Git status" })
-map("n", "<leader>gP", "<cmd>git push<cr>", { desc = "git push" })
-map("n", "<leader>gp", "<cmd>git pull<cr>", { desc = "git pull" })
+-- Push current branch to origin
+map("n", "<leader>gP", function()
+  local branch = vim.fn.FugitiveHead()
+  vim.cmd("Git push origin " .. branch)
+end, { desc = "git push origin current-branch" })
+
+-- Pull current branch from origin
+map("n", "<leader>gp", function()
+  local branch = vim.fn.FugitiveHead()
+  vim.cmd("Git pull origin " .. branch)
+end, { desc = "git pull origin current-branch" })
+
 map("n", "<leader>gc", "<cmd>Git commit<CR>", { desc = "Git commit" })
 map("n", "<leader>gC", "<cmd>Git commit --amend<CR>", { desc = "Amend last commit" })
 map("n", "<leader>ga", "<cmd>Git add %<CR>", { desc = "Git add current file" })
