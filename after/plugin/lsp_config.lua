@@ -14,7 +14,7 @@ mason_lspconfig.setup({
     "cssls",
     "tailwindcss",
     -- "gopls",
-    -- "ruby_lsp",
+    "ruby_lsp",
     -- "ts_ls",
     "denols",
   },
@@ -111,18 +111,18 @@ lspconfig.tailwindcss.setup({
 })
 
 -- Ruby LSP
--- lspconfig.ruby_lsp.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
---   filetypes = { "ruby" },
---   init_options = { formatter = "auto" },
---   settings = {
---     rubocop = {
---       command = "rubocop",
---       args = { "--format", "json" },
---     },
---   },
--- })
+lspconfig.ruby_lsp.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "ruby" },
+  init_options = { formatter = "auto" },
+  settings = {
+    rubocop = {
+      command = "rubocop",
+      args = { "--format", "json" },
+    },
+  },
+})
 
 -- Go
 -- lspconfig.gopls.setup({
