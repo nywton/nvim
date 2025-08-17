@@ -65,10 +65,6 @@ local capabilities = cmp_nvim_lsp.default_capabilities()
 
 -- on_attach: common keymaps + format on save
 local function on_attach(client, bufnr)
-  local bufmap = function(mode, lhs, rhs)
-    vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = bufnr })
-  end
-
   -- Format before save if supported
   if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -78,19 +74,6 @@ local function on_attach(client, bufnr)
       end,
     })
   end
-
-  -- LSP keymaps
-  bufmap("n", "gd", vim.lsp.buf.definition)
-  bufmap("n", "gr", vim.lsp.buf.references)
-  bufmap("n", "gi", vim.lsp.buf.implementation)
-  bufmap("n", "K", vim.lsp.buf.hover)
-  bufmap("n", "<leader>rn", vim.lsp.buf.rename)
-  bufmap("n", "<leader>ca", vim.lsp.buf.code_action)
-  bufmap("n", "<leader>cb", vim.lsp.buf.format)
-  bufmap("n", "[d", vim.diagnostic.goto_prev)
-  bufmap("n", "]d", vim.diagnostic.goto_next)
-  bufmap("n", "<leader>E", vim.diagnostic.open_float)
-  bufmap("n", "<leader>Q", vim.diagnostic.setloclist)
 end
 
 -- Helpers for project detection
@@ -177,3 +160,17 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.lsp.buf.format()
   end,
 })
+-- LSP keymaps
+vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+vim.keymap.set("n", "gr", vim.lsp.buf.references)
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
+vim.keymap.set("n", "K", vim.lsp.buf.hover)
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
+vim.keymap.set("n", "<leader>ca", function()
+  vim.lsp.buf.code_action()
+end, { noremap = true, silent = true, desc = "LSP Code Action" })
+vim.keymap.set("n", "<leader>cb", vim.lsp.buf.format)
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+vim.keymap.set("n", "<leader>E", vim.diagnostic.open_float)
+vim.keymap.set("n", "<leader>Q", vim.diagnostic.setloclist)
